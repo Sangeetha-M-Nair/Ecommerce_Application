@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "autoprefixer": "10.4.5",
     "axios": "^0.26.0",
     "bootstrap": "^5.1.3",
     "braintree-web-drop-in-react": "^1.2.1",
@@ -24,6 +25,7 @@
     "react-modal": "^3.14.4",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
+    "react-select": "^5.3.1",
     "react-shopping-cart": "^1.9.5",
     "web-vitals": "^2.1.4",
     "webfontloader": "^1.6.28"

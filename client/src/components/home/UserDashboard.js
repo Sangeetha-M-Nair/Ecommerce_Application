@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import AutoCompletedText from "./AutoComplete";
 import ReactDOM from "react-dom";
 import ErrorMessage from "../misc/ErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ function UserDashboard() {
               >
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <a className="nav-link" href="/userDashboard">
+                    <a className="nav-link" href="/userHome">
                       HOME
                       {/* <span className="sr-only">(current)</span> */}
                     </a>
@@ -252,20 +252,19 @@ function UserDashboard() {
                       <Modal.Title>Book Your Order by Area Wise</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <input
-                        value={placeName}
-                        id="form-groc"
-                        type="text"
-                        placeholder="Enter your City"
-                        onChange={(e) => setPlaceName(e.target.value)}
-                      />
+                      <AutoCompletedText/>
+
                     </Modal.Body>
                     <Modal.Footer>
                       <Button className="btn btn-primary" variant="Search">
                         Proceed
+
                       </Button>
-                      {/* <Button variant="secondary">Close</Button> */}
                     </Modal.Footer>
+                   
+                   
+                      {/* <Button variant="secondary">Close</Button> */}
+                    
                   </Modal.Dialog>
                 </div>
                 {/* </form> */}

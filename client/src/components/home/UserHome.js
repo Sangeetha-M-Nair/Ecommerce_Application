@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
+import "bootstrap/dist/css/bootstrap.css";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
+import AutoCompletedText from "./AutoComplete";
+import ReactDOM from "react-dom";
 import ErrorMessage from "../misc/ErrorMessage";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function UserProfile() {
-  const [user, setUser] = useState("");
+function UserHome() {
+  const [placeName, setPlaceName] = useState("");
   let navigate = useNavigate();
+
   const [errorMessage, setErrorMessage] = useState(null);
-
-  async function getUser() {
-    const userRes = await Axios.get(
-      "http://localhost:5000/authUser/userProfile"
-    );
-    setUser(userRes.data);
-  }
-
-  useEffect(() => {
-    // if (!user) {
-    // setUser([]);
-    // } else {
-    getUser();
-
-    // editUser();
-    // }
-  }, []);
 
   async function logout() {
     await Axios.get("http://localhost:5000/auth/logOut");
@@ -55,7 +45,7 @@ function UserProfile() {
               >
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <a className="nav-link" href="">
+                    <a className="nav-link" href="/userHome">
                       HOME
                       {/* <span className="sr-only">(current)</span> */}
                     </a>
@@ -73,8 +63,9 @@ function UserProfile() {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="">
-                      {user.firstname}
+                    <a className="nav-link" href="/userProfile">
+                      USER
+                      {/* {user.firstname} */}
                       {/* <span className="sr-only">(current)</span> */}
                     </a>
                   </li>
@@ -200,6 +191,7 @@ function UserProfile() {
         {/* end header section */}
       </div>
       {/* inner page section */}
+
       <section className="inner_page_head">
         <div className="container_fuild">
           <div className="row">
@@ -208,16 +200,15 @@ function UserProfile() {
                 <nav className="navbar navbar-expand-lg custom_nav-container ">
                   <ul className="navbar-nav">
                     <li className="nav-item">
-                      <Link className="nav-link" to="/userProfile">
-                        {user.firstname} Profile
+                      <h4 className="nav-link" to="/userHome">
+                        User HOME{" "}
                         <span className="sr-only">(current)</span>
-                      </Link>
+                      </h4>
                     </li>
                   </ul>
                   <ul className="navbar-nav">
                     <li className="nav-item">
-                      <Link className="nav-link" to="/userOrders">
-                        {user.firstname} Order details
+                      <Link className="nav-link" to="">
                         <span className="sr-only">(current)</span>
                       </Link>
                     </li>
@@ -250,45 +241,33 @@ function UserProfile() {
                   />
                 )}
                 <br />
-                <form className="form" id="form" encType="multipart/form-data">
-                  {/* <fieldset> */}
+                {/* <form
+                //   action="index.html"
+                  //   onSubmit={login}
+                > */}
+                <div style={{ display: "block", width: 700, padding: 30 }}>
+                  <h3>Welcome to Titan Machinery</h3>
+                  <Modal.Dialog>
+                    <Modal.Header className="inner_page_head" closeButton>
+                      <Modal.Title>Book Your Order by Area Wise</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <AutoCompletedText/>
 
-                  <input
-                    defaultValue={user.firstname}
-                    type="text"
-                    readOnly={true}
-                  />
-                  <input
-                    defaultValue={user.lastname}
-                    type="text"
-                    readOnly={true}
-                  />
-                  <input
-                    defaultValue={user.email}
-                    type="email"
-                    readOnly={true}
-                  />
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button className="btn btn-primary" variant="Search">
+                        Proceed
 
-                  <input
-                    defaultValue={user.phone}
-                    type="text"
-                    readOnly={true}
-                  />
-
-                  <Link
-                    className="btn-edit"
-                    type="button"
-                    to="/updateUser"
-                    // onClick={() => }
-                  >
-                    Update
-                  </Link>
-                  <br />
-                  <Link to="/userChangePassword">Change password</Link>
-
-                  {/* <input type="submit" defaultValue="Update" /> */}
-                  {/* </fieldset> */}
-                </form>
+                      </Button>
+                    </Modal.Footer>
+                   
+                   
+                      {/* <Button variant="secondary">Close</Button> */}
+                    
+                  </Modal.Dialog>
+                </div>
+                {/* </form> */}
               </div>
               {/* <br />
               <p>
@@ -424,4 +403,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default UserHome;

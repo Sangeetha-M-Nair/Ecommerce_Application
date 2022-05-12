@@ -11,7 +11,7 @@ Axios.defaults.withCredentials = true;
 function App() {
   return (
     <MerchantContextProvider>
-      <UserContextProvider >
+      <UserContextProvider>
       <div className="App">
         <Router />
       </div>

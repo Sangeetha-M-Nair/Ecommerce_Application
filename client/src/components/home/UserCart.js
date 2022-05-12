@@ -18,27 +18,21 @@ import {
   addItem,
   removeItem,
 } from "./CartHelper";
-import {processPayment,getBraintreeClientToken} from "../auth/Payment"
+import { processPayment, getBraintreeClientToken } from "../auth/Payment";
 import GetTotal from "./GetTotal";
 
-
-
 export default function UserCart(product) {
+  let navigate = useNavigate();
 
-    let navigate = useNavigate();
-
-
-   useEffect(() => {
-     getUser();
-   }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   const { user, getUser } = useContext(UserContext);
 
   const [items, setItems] = useState([]);
   const [run, setRun] = useState(false);
   const [count, setCount] = useState(product.count);
-
-  
 
   const handleChange = (productId) => (event) => {
     setRun(!run); // run useEffect in parent Cart
@@ -397,7 +391,8 @@ export default function UserCart(product) {
                       {user ? (
                         <Button
                           className="btn btn-danger"
-                          variant="Search" href ="/payment"
+                          variant="Search"
+                          href="/payment"
                           // onClick={() => {
                           //   getToken(userId, token);
                           // }}

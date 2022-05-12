@@ -1,34 +1,59 @@
 import React, { useEffect, useState, useContext } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import MerchantContext from "../../context/MerchantContext";
+import "bootstrap/dist/css/bootstrap.css";
 
-function MerchantContact() {
-  const [merchant, setMerchant] = useState("");
+import ErrorMessage from "../misc/ErrorMessage";
+
+export default function MercStock(props) {
+    const [products, setProducts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [merchant, setMerchant] = useState([]);
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  const pages = new Array(numberOfPages).fill(null).map((v, i) => i);
 
   let navigate = useNavigate();
+
+  async function getMerchant() {
+    const merchantRes = await Axios.get(
+      "http://localhost:5000/authMerchant/merchantProfile"
+    );
+
+    setMerchant(merchantRes.data);
+  }
+
+  const gotoPrevious = () => {
+    setPageNumber(Math.max(0, pageNumber - 1));
+  };
+
+  const gotoNext = () => {
+    try {
+      setPageNumber(Math.min(numberOfPages - 1, pageNumber + 1));
+   
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(
+    (id) => {
+      fetch(`http://localhost:5000/product/productsAll?page=${pageNumber}`)
+        .then((response) => response.json())
+        .then(({ totalPages, products }) => {
+          setProducts(products);
+          setNumberOfPages(totalPages);
+          getMerchant();
+        });
+    },
+    [pageNumber]
+  );
 
   async function logout() {
     await Axios.get("http://localhost:5000/auth/logOut");
     navigate("/");
   }
-  async function getMerchant() {
-    const merchantRes = await Axios.get(
-      "http://localhost:5000/authMerchant/merchantProfile"
-    );
-    setMerchant(merchantRes.data);
-  }
-
-  useEffect(() => {
-    // if (!merchant) {
-    // setMerchant([]);
-    // } else {
-    getMerchant();
-    console.log("merchantprofile merchant   " + merchant.firstname);
-
-    // editUser();
-    // }
-  }, []);
 
   return (
     <div>
@@ -39,7 +64,7 @@ function MerchantContact() {
             <header className="header_section">
               <div className="container">
                 <nav className="navbar navbar-expand-lg custom_nav-container ">
-                  <a className="navbar-brand" href="index.html">
+                  <a className="navbar-brand" href="">
                     <img width={250} src="../../images/logo.png" alt="" />
                   </a>
                   <button
@@ -82,46 +107,6 @@ function MerchantContact() {
                         </a>
                       </li>
 
-                      {/* <span className="sr-only">(current)</span> */}
-                      {/* </a> */}
-                      {/* <li className="nav-item dropdown">
-                      <a
-                        className="nav-link dropdown-toggle"
-                        href="#"
-                        data-toggle="dropdown"
-                        role="button"
-                        aria-haspopup="true"
-                        aria-expanded="true"
-                      >
-                        <li>
-                          <a href="testimonial.html">CONTACT</a>
-                        </li>
-                        <span className="nav-label">
-                          SHOP <span className="caret" />
-                        </span> */}
-                      {/* </a> */}
-
-                      {/* <ul className="dropdown-menu">
-                        <li>
-                          <a href="testimonial.html">CONTACT</a>
-                        </li>
-                      </ul> */}
-                      {/* </li> */}
-                      {/* <li className="nav-item">
-                      <a className="nav-link" href="product.html">
-                        Products
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a className="nav-link" href="blog_list.html">
-                        Blog
-                      </a>
-                    </li>
-                    <li className="nav-item active">
-                      <a className="nav-link" href="contact.html">
-                        Contact
-                      </a>
-                    </li> */}
                       <form className="form-inline">
                         <button
                           className="btn  my-2 my-sm-0 nav_search-btn"
@@ -153,7 +138,8 @@ function MerchantContact() {
                       </ul>
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link className="nav-link" to="">
+                          <Link className="nav-link" to="/stock">
+                            View Stock
                             <span className="sr-only">(current)</span>
                           </Link>
                         </li>
@@ -161,7 +147,6 @@ function MerchantContact() {
                       <ul className="navbar-nav">
                         <li className="nav-item">
                           <a className="nav-link" href="">
-                            Contact
                             <span className="sr-only">(current)</span>
                           </a>
                         </li>
@@ -181,56 +166,102 @@ function MerchantContact() {
           </section>
           {/* end inner page section */}
           {/* why section */}
-          <section className="why_section layout_padding">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-8 offset-lg-2">
-                  <div className="full">
-                    <form>
-                      <div className="footer_contact">
-                        <a href="">
-                          <h3>
-                            <b>
-                              <u>
-                                {" "}
-                                <br />
-                                <br />
-                                CONTACT
-                              </u>
-                            </b>
-                          </h3>
-                        </a>
+            <section className="why_section layout_padding">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-8 offset-lg-2">
+                    <div className="full">
+                      {errorMessage && (
+                        <ErrorMessage
+                          message={errorMessage}
+                          clear={() => setErrorMessage(null)}
+                        />
+                      )}
+                      <br />
+                      <h3>Page of {pageNumber + 1}</h3>
 
-                        <div className="contact_link_box">
-                          <a href="">
-                            <i
-                              className="fa fa-map-marker"
-                              aria-hidden="true"
-                            />
-                            <br />
-                            <span>
-                              {merchant.firstname} {merchant.lastname}
-                            </span>
-                          </a>
-                          <br />
-                          <a href="">
-                            <i className="fa fa-phone" aria-hidden="true" />
-                            <span> Call {merchant.mobno}</span>
-                          </a>
-                          <br />
+                      <form
+                        className="form"
+                        id="form"
+                        encType="multipart/form-data"
+                      >
+                        <table className="table">
+                          <thead className="thead-dark">
+                            <tr>
+                              <th>Product</th>
+                              <th>Quantity</th>
+                              {/* <th>Created at</th>
+                              <th>Accept/Reject</th> */}
+                              {/* <th>Cost</th>
+                              <th>Weight</th>
+                              <th>Quantity</th>
+                              <th>Offer</th>
+                              <th>Total Amount</th>
+                              <th>Edit</th>
+                              <th>Delete</th> */}
+                            </tr>
+                          </thead>
 
-                          <a href="">
-                            <i className="fa fa-envelope" aria-hidden="true" />
-                            <span> {merchant.email} </span>
-                          </a>
+                          {products.map((product, id) => {
+                            return (
+                              <tbody>
+                                <tr key={product._id}>
+                                  <td>{product.machname}</td>
+                                  {/* <td>{product._id}</td> */}
+                                  <td>{product.quantity}</td>
+
+                                  {/* <td>{order.createdAt}</td> */}
+                                  {/* <td>{product.cost}</td>
+                                  <td>{product.weight}</td>
+                                  <td>{product.quantity}</td>
+                                  <td>{product.offer}</td>
+                                  <td>{product.totalamount}</td> */}
+                                  {/* <td>
+                                    <Link
+                                      className="btn btn-primary"
+                                      to={`/editProduct/${product._id}`}
+                                      key={i}
+                                      product={{ product }}
+                                      getProducts={{ getProducts }}
+                                    >
+                                      Edit
+                                    </Link>
+                                  </td> */}
+                                </tr>
+                              </tbody>
+                            );
+                          })}
+                        </table>
+                        <div key={pageNumber.toString()} className="btn-box">
+                          <button
+                            className="btn-outline-danger"
+                            onClick={gotoPrevious}
+                          >
+                            Previous
+                          </button>
+                          {pages.map((pageIndex) => (
+                            <button
+                              className="btn-grey"
+                              key={pageIndex}
+                              onClick={() => setPageNumber(pageIndex)}
+                            >
+                              {pageIndex + 1}
+                            </button>
+                          ))}
+                          <button
+                            className="btn-outline-danger"
+                            onClick={gotoNext}
+                          >
+                            Next
+                          </button>
                         </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          
           {/* end why section */}
           {/* arrival section */}
 
@@ -244,7 +275,7 @@ function MerchantContact() {
                     <a href="https://html.design/">Free Html Templates</a>
                     <br />
                     Distributed By{" "}
-                    <a href="https://themewagon.com/" target="_blank" rel="noopener" >
+                    <a href="https://themewagon.com/" target="_blank">
                       ThemeWagon
                     </a>
                   </p>
@@ -257,5 +288,3 @@ function MerchantContact() {
     </div>
   );
 }
-
-export default MerchantContact;

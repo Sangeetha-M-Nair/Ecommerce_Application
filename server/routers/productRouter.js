@@ -105,6 +105,49 @@ router.post("/createProducts", authMerchant, async (req, res) => {
 
     console.log(imagePath);
 
+    // var nameExp = /^[A-Za-z]*$/;
+    // if (!nameExp.test(catgname))
+    //   return res.status(400).json({
+    //     errorMessage: "please enter alphabets only in category name",
+    //   });
+
+    // var MnameExp = /^[A-Za-z]*$/;
+    var MnameExp = /^[a-zA-Z ]*$/;
+    if (!MnameExp.test(machname))
+      return res.status(400).json({
+        errorMessage: "please enter alphabets only in Machine name",
+      });
+
+    var CExp = /^[0-9]{1,40}$/;
+    if (!CExp.test(cost))
+      return res.status(400).json({
+        errorMessage: "please enter cost value numeric only ",
+      });
+
+    var QExp = /^[0-9]{1,20}$/;
+    if (!QExp.test(quantity))
+      return res.status(400).json({
+        errorMessage: "please enter numeric only for quantity ",
+      });
+
+    var WExp = /^[0-9]{1,20}$/;
+    if (!WExp.test(weight))
+      return res.status(400).json({
+        errorMessage: "please enter numeric only for weight",
+      });
+
+    var OExp = /^[0-9]{2,40}$/;
+    if (!OExp.test(offer))
+      return res.status(400).json({
+        errorMessage: "please enter numeric only for offer ",
+      });
+
+    var TExp = /^[0-9]{1,20}$/;
+    if (!TExp.test(totalamount))
+      return res.status(400).json({
+        errorMessage: "please enter numeric only for total amount ",
+      });
+
     const newProduct = new Product({
       catgname,
       machname,
@@ -274,6 +317,7 @@ router.put("/:id", authMerchant, async (req, res) => {
       return res.status(400).json({
         errorMessage: "please enter quantity between  1 and 400",
       });
+      .0
 
     // if (originalProduct.phone.length < 10 || phone.length > 10)
     //   return res.status(400).json({

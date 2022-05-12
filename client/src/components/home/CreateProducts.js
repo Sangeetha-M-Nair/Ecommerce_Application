@@ -7,6 +7,7 @@ import ErrorMessage from "../misc/ErrorMessage";
 function CreateProducts() {
   const [merchant, setMerchant] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [category, setCategory] = useState([]);
 
   const [catgName, setCatgName] = useState("");
   const [machName, setMachName] = useState("");
@@ -26,9 +27,17 @@ function CreateProducts() {
 
   async function getMerchant() {
     const merchantRes = await Axios.get(
-      "http://localhost:5000/authMerchant/merchantProfile"
+      "http://localhost:5000/authMerchant/merchantLoggedIn"
     );
     setMerchant(merchantRes.data);
+  }
+
+  async function getCategory() {
+    const catRes = await Axios.get(
+      "http://localhost:5000/category/categoryAll"
+    );
+    setCategory(catRes.data);
+    // console.log(category + "category");
   }
 
   useEffect(() => {
@@ -36,14 +45,15 @@ function CreateProducts() {
     // setMerchant([]);
     // } else {
     getMerchant();
-    console.log("merchantprofile merchant   " + merchant.firstname);
+    getCategory();
+    console.log(category);
+    console.log(merchant);
 
     // editUser();
     // }
   }, []);
 
   async function saveProduct(e) {
-    
     e.preventDefault();
     try {
       let form = document.getElementById("form");
@@ -51,9 +61,10 @@ function CreateProducts() {
 
       Axios.post("http://localhost:5000/upload", formData).then((res) => {
         console.log("image uploaded");
-      })
-    } catch (err) { console.log(err); }
-
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
     const productData = {
       catgname: catgName,
@@ -66,7 +77,7 @@ function CreateProducts() {
       Pimage: Image,
       // merchant: merchant,
     };
-    
+
     function setImage(fakepath) {
       alert("ImageFunc");
     }
@@ -77,7 +88,6 @@ function CreateProducts() {
         productData
       );
       alert("Saved Successfully");
-
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -93,7 +103,7 @@ function CreateProducts() {
     navigate("/merchantDashboard");
 
     console.log(document.cookie);
-     await getMerchant();
+    await getMerchant();
   }
 
   return (
@@ -213,7 +223,6 @@ function CreateProducts() {
                       <ul className="navbar-nav">
                         <li className="nav-item">
                           <a className="nav-link" href="">
-                            
                             <span className="sr-only">(current)</span>
                           </a>
                         </li>
@@ -252,22 +261,26 @@ function CreateProducts() {
                     >
                       {/* <fieldset> */}
                       <label htmlFor="form-catg">Category Name</label>
+                      <br />
 
-                      <input
+                      {/* <input
                         value={catgName}
                         id="form-catg"
                         type="text"
                         placeholder="Enter Category"
                         onChange={(e) => setCatgName(e.target.value)}
-                      />
-                      {/* <select>
-                        <option value="Fresh Produce">Grapefruit</option>
-                        <option value="Meat">Lime</option>
-                        <option selected value="coconut">
-                          Coconut
-                        </option>
-                        <option value="mango">Mango</option>
-                      </select> */}
+                      /> */}
+                      <select
+                        id="form-catg"
+                        onChange={(e) => setCatgName(e.target.value)}
+                      >
+                        {category.map((category) => (
+                          <option key={category._id} value={category.catgname}>
+                            {category.catgname}
+                          </option>
+                        ))}
+                      </select>
+                      <br />
 
                       <label htmlFor="form-groc">Machine Name</label>
 

@@ -3,11 +3,10 @@ import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 function MerchantDashboard() {
-  
   let navigate = useNavigate();
 
   async function logout() {
-     await Axios.get("http://localhost:5000/auth/logOut");
+    await Axios.get("http://localhost:5000/auth/logOut");
     navigate("/");
   }
 
@@ -31,13 +30,12 @@ function MerchantDashboard() {
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false"
                     aria-label="Toggle navigation"
-                  >
-                  </button>
+                  ></button>
                   <div
                     className="collapse navbar-collapse"
                     id="navbarSupportedContent"
                   >
-                    <div  className="navbar-nav">
+                    <div className="navbar-nav">
                       <li className="nav-item">
                         <Link className="nav-link" to="/merchantDashboard">
                           HOME
@@ -52,10 +50,10 @@ function MerchantDashboard() {
                         </Link>
                       </li>
                       <li className="nav-item">
-                          <Link className="nav-link" to="/merchantProfile">
-                            Merchant
-                          </Link>
-                          {/* <span className="sr-only">(current)</span> */}
+                        <Link className="nav-link" to="/merchantProfile">
+                          Merchant
+                        </Link>
+                        {/* <span className="sr-only">(current)</span> */}
                       </li>
                       <li className="nav-item">
                         <a className="nav-link" onClick={logout}>
@@ -145,7 +143,7 @@ function MerchantDashboard() {
                       </ul>
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <a className="nav-link" href="">
+                          <a className="nav-link" href="/allorders">
                             Order
                             <span className="sr-only">(current)</span>
                           </a>
@@ -153,7 +151,8 @@ function MerchantDashboard() {
                       </ul>
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <a className="nav-link" href="">
+
+                          <a className="nav-link" href="/stock">
                             Stock Details
                             <span className="sr-only">(current)</span>
                           </a>

@@ -49,7 +49,12 @@ router.get("/allmerchants", async (req, res) => {
     console.log(err);
     res.status(500).send();
   }
+
 });
+
+
+
+
 router.get("/allusers", async (req, res) => {
   try {
     const token = req.cookies;

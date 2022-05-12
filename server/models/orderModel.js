@@ -5,6 +5,7 @@ const { ObjectId } = mongoose.Schema;
 const CartItemSchema = new mongoose.Schema(
   {
     id: { type: ObjectId, ref: "Product" },
+    Pimage: String,
     machname: String,
     cost: Number,
     count: Number,
@@ -19,7 +20,7 @@ const OrderSchema = new mongoose.Schema(
   {
     products: [CartItemSchema],
     transaction_id: {},
-    amount: Number ,
+    amount: Number,
     address: String,
     // pincode:String,
     status: {

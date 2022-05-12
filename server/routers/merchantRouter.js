@@ -15,9 +15,10 @@ const app = express();
 
 const { Console } = require("console");
 //sendTextMessage
-const client = require("twilio")('AC41ba7604c276a33050ccb6310f583a43', '0dfa35ffacd6334fa7bc669c193dae7c');
-
-
+const client = require("twilio")(
+  "AC41ba7604c276a33050ccb6310f583a43",
+  "0dfa35ffacd6334fa7bc669c193dae7c"
+);
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
@@ -28,8 +29,6 @@ const transporter = nodemailer.createTransport(
   })
 );
 `-`;
-
-
 
 router.post("/", async (req, res) => {
   console.log("merchant router");
@@ -76,10 +75,10 @@ router.post("/change-password/:id", authMerchant, async (req, res) => {
     existingMerchant.passwordHash
   );
 
- if (!correctPassword)
-   return res.status(401).json({
-     errorMessage: "Old Password is incorrect.",
-   });
+  if (!correctPassword)
+    return res.status(401).json({
+      errorMessage: "Old Password is incorrect.",
+    });
 
   console.log("--------------new password" + newPassword);
   // console.log("token"+sentToken);
@@ -128,7 +127,7 @@ router.post("/merchantRegister", async (req, res) => {
       password,
       email,
       mobno,
-      
+
       address,
       street,
       city,
@@ -478,8 +477,6 @@ router.put("/merchantUpdate", authMerchant, async (req, res) => {
   }
 });
 
-
-
 router.post("/send-email", async (req, res) => {
   try {
     const { email } = req.body;
@@ -610,8 +607,7 @@ router.post("/new-password/:id", (req, res) => {
     });
 });
 
-
-router.get("/merchantLoggedIn", (req, res) => {
+router.get("/merchantLoggedIn", authMerchant,(req, res) => {
   try {
     const token = req.cookies.token;
     console.log("token..............*****....." + token);
@@ -622,8 +618,9 @@ router.get("/merchantLoggedIn", (req, res) => {
     req.merchant = validatedMerchant.id;
 
     res.json(validatedMerchant.id);
-    console.log(validatedMerchant);
+    console.log("merchant ***" + validatedMerchant.id);
   } catch (err) {
+    console.log(err);
     return res.json(null);
   }
 });

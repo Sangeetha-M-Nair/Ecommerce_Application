@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactDOM from "react-dom";
 import ErrorMessage from "../misc/ErrorMessage";
 import { Link, useNavigate } from "react-router-dom";
-import CartBootModal from "../home/CartBootModal";
+// import CartBootModal from "../home/CartBootModal";
 // import { post } from "jquery";
 
 // import SearchProducts from "./SearchProducts";
@@ -33,15 +33,13 @@ function UserProduct(props) {
 
   const [redirect, setRedirect] = useState(false);
 
-
-
-  
-
   async function getUser() {
     const userRes = await Axios.get("http://localhost:5000/authUser/loggedIn");
     setUser(userRes.data);
   }
+
   let navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [items, setItems] = useState([]);
   const [addtocart, setAddtocart] = useState(false);
@@ -76,7 +74,7 @@ function UserProduct(props) {
   const shouldRedirect = (redirect) => {
     if (redirect) {
       //do last after localstorage correction
-       return navigate("/userCart");
+      return navigate("/userCart");
     }
   };
 
@@ -231,12 +229,8 @@ function UserProduct(props) {
                       {/* <Link
                         //  style={isActive(history, "/userCart")}
                         to="/userCart"
-                      > */}
-                        {" "}
-                        <sup>
-                          
-                        {itemTotal()}
-                        </sup>
+                      > */}{" "}
+                      <sup>{itemTotal()}</sup>
                       {/* </Link> */}
                       <svg
                         version="1.1"
@@ -412,6 +406,7 @@ function UserProduct(props) {
                             <b>T Rs.{product.totalamount}/-</b>
                           </td>
                         </tr>
+                        <tr>Stock: {product.quantity} nos</tr>
                         {/* </table>{" "} */}
                       </div>
                     </div>
@@ -525,3 +520,4 @@ function UserProduct(props) {
 }
 
 export default UserProduct;
+// 

@@ -197,7 +197,7 @@ router.post("/change-password/:id", authUser, async (req, res) => {
 
   const correctPassword = await bcrypt.compare(
     oldPassword,
-    existingUser.passwordHash66666666666666666666666666666
+    existingUser.passwordHash
   );
 
   if (!correctPassword)

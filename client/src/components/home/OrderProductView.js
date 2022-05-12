@@ -3,10 +3,28 @@ import Axios from "axios";
 import ErrorMessage from "../misc/ErrorMessage";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-function UserProfile() {
+import "bootstrap/dist/css/bootstrap.css";
+
+function OrderProductView(order) {
   const [user, setUser] = useState("");
+  const [products, setProducts] = useState([]);
+
+  const { id } = useParams();
+
   let navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
+
+  async function getProducts() {
+    const productsRes = await Axios.get(
+      `http://localhost:5000/order/createOrder/${id}`
+    );
+    setProducts(productsRes.data);
+  }
+  useEffect(() => {
+    // getProduct(id);
+    console.log("id------------------------------------" + id);
+    getProducts();
+  }, []);
 
   async function getUser() {
     const userRes = await Axios.get(
@@ -15,14 +33,9 @@ function UserProfile() {
     setUser(userRes.data);
   }
 
-  useEffect(() => {
-    // if (!user) {
-    // setUser([]);
-    // } else {
+  useEffect((user) => {
     getUser();
-
-    // editUser();
-    // }
+    // getOrders(user);
   }, []);
 
   async function logout() {
@@ -238,64 +251,78 @@ function UserProfile() {
 
       {/* end inner page section */}
       {/* why section */}
-      <section className="why_section layout_padding">
+      <section className="product_section layout_padding">
         <div className="container">
+          <div className="heading_container heading_center">
+            <h2>
+              <span>products</span>
+            </h2>
+          </div>
+          <h3></h3>
           <div className="row">
-            <div className="col-lg-8 offset-lg-2">
-              <div className="full">
-                {errorMessage && (
-                  <ErrorMessage
-                    message={errorMessage}
-                    clear={() => setErrorMessage(null)}
-                  />
-                )}
-                <br />
-                <form className="form" id="form" encType="multipart/form-data">
-                  {/* <fieldset> */}
-
-                  <input
-                    defaultValue={user.firstname}
-                    type="text"
-                    readOnly={true}
-                  />
-                  <input
-                    defaultValue={user.lastname}
-                    type="text"
-                    readOnly={true}
-                  />
-                  <input
-                    defaultValue={user.email}
-                    type="email"
-                    readOnly={true}
-                  />
-
-                  <input
-                    defaultValue={user.phone}
-                    type="text"
-                    readOnly={true}
-                  />
-
-                  <Link
-                    className="btn-edit"
-                    type="button"
-                    to="/updateUser"
-                    // onClick={() => }
+            {products.map((item, i) => {
+              return (
+                <div key={item._id} className="col-sm-6 col-md-4 col-lg-3">
+                  <div
+                    className="box"
+                    style={{ backgroundColor: "powderblue" }}
                   >
-                    Update
-                  </Link>
-                  <br />
-                  <Link to="/userChangePassword">Change password</Link>
+                    <div className="option_container">
+                      <div key={item._id} className="options">
+                        <br />
+                        {/* <button
+                          className="btn btn-danger"
+                          onClick={() => onRemove(product)}
+                          href
+                          className="option1"
+                        >
+                          - Remove
+                        </button> */}
+                      </div>
+                    </div>
+                    <div
+                      className="img-box"
+                      style={{
+                        contain: "layout",
+                      }}
+                    >
+                      <img
+                        src={`http://localhost:5000/uploads/${item.Pimage}`}
+                        alt="image"
+                      />
+                    </div>
+                    <div className=" table-info w-auto">
+                      {/* <table> */}
+                      <tr>
+                        <td colSpan="2">
+                          <b>{item.machname}</b>
+                        </td>
+                      </tr>
 
-                  {/* <input type="submit" defaultValue="Update" /> */}
-                  {/* </fieldset> */}
-                </form>
-              </div>
-              {/* <br />
-              <p>
-                Don't have an account yet?{" "}
-                <Link to="/userRegister">Register here</Link>
-              </p> */}
-            </div>
+                      <tr>
+                        <td>Cost:{item.cost}/- </td>
+                      </tr>
+                      <tr>
+                        <td>Quantity:{item.count} </td>
+                      </tr>
+                      <tr>
+                        <td colSpan="2">{item._id}</td>
+                      </tr>
+                      <tr>
+                        <td colSpan="2"></td>
+                      </tr>
+                      {/* <tr>
+                        <td>{products.offer} Off</td>
+                        <td>
+                          <b>T Rs.{products.totalamount}/-</b>
+                        </td>
+                      </tr> */}
+                      {/* </table>{" "} */}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -303,125 +330,12 @@ function UserProfile() {
       {/* arrival section */}
 
       <section className="arrival_section">
-        <div className="container">
-          {/* <div className="box"> */}
-          {/* <div className="arrival_bg_box">
-              <img
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                src="../../images/arrival-bg.png"
-                alt="image"
-              /> */}
-          {/* <img
-                  width={250}
-                  src={require("../../images/arrival-bg.jpg")}
-                  alt=""
-                /> */}
-          {/* client\src\images\arrival-bg.jpg */}
-          {/* D:\job\Engineering_Works_MERN\client\src\images\arrival-bg.jpg */}
-          {/* </div> */}
-          {/* <div className="row">
-              <div className="col-md-6 ml-auto">
-                <div className="heading_container remove_line_bt">
-                  <h2>#NewArrivals</h2>
-                </div>
-                <p style={{ marginTop: "20px", marginBottom: "30px" }}>
-                  famms.com offers high precision suppliers machinery at
-                  industry leading prices. Exporters & Importers from the
-                  world's largest online B2B marketplace. Logistics Service.
-                  Most Popular. Production Monitoring. Trade Assurance.
-                </p>
-                <a href="#">Shop Now</a>
-              </div>
-            </div> */}
-          {/* </div>  */}
-        </div>
+        <div className="container"></div>
       </section>
 
       {/* footer section */}
-      <footer className="footer_section">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-4 footer-col">
-              <div className="footer_contact">
-                <h4>Reach at..</h4>
-                <div className="contact_link_box">
-                  <a href="">
-                    <i className="fa fa-map-marker" aria-hidden="true" />
-                    <span>Begumpet</span>
-                  </a>
-                  <a href="">
-                    <i className="fa fa-phone" aria-hidden="true" />
-                    <span>Call +01 1234567890</span>
-                  </a>
-                  <a href="">
-                    <i className="fa fa-envelope" aria-hidden="true" />
-                    <span>Sangeetha@gmail.com</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 footer-col">
-              <div className="footer_detail">
-                <a href="" className="footer-logo">
-                  Famms
-                </a>
-                <p>
-                  Necessary, making this the first true generator on the
-                  Internet. It uses a dictionary of over 200 Latin words,
-                  combined with
-                </p>
-                <div className="footer_social">
-                  <a href="">
-                    <i className="fa fa-facebook" aria-hidden="true" />
-                  </a>
-                  <a href="">
-                    <i className="fa fa-twitter" aria-hidden="true" />
-                  </a>
-                  <a href="">
-                    <i className="fa fa-linkedin" aria-hidden="true" />
-                  </a>
-                  <a href="">
-                    <i className="fa fa-instagram" aria-hidden="true" />
-                  </a>
-                  <a href="">
-                    <i className="fa fa-pinterest" aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 footer-col">
-              <div className="map_container">
-                <div className="map">
-                  <div id="googleMap" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footer-info">
-            <div className="col-lg-7 mx-auto px-0">
-              <p>
-                © <span id="displayYear" /> All Rights Reserved By
-                <a href="https://html.design/">Free Html Templates</a>
-                <br />
-                Distributed By{" "}
-                <a href="https://themewagon.com/" target="_blank">
-                  ThemeWagon
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
 
-export default UserProfile;
+export default OrderProductView;

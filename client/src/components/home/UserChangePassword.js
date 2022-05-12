@@ -3,8 +3,6 @@ import Axios from "axios";
 import ErrorMessage from "../misc/ErrorMessage";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-
-
 function UserChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");

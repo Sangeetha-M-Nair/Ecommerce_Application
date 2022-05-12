@@ -32,4 +32,21 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+
+
+
+
+router.get("/categoryAll", async (req, res) => {
+  try {
+    // const token = req.cookies;
+    // console.log(token);
+
+    const category = await Category.find({});
+    console.log("category" + category);
+    res.json(category);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;

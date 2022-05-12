@@ -4,24 +4,24 @@
 /node_modules
 /.pnp
 .pnp.js
-sever/.env
-server/node_modules
-./node_modules
-client/node_modules
-node_modules
-.env
+ node_modules/
 # testing
 /coverage
 ### react ###
-.DS_*
+.DS_*weak-map/
+server/node_modules
+client/node_modules
+server/env
+server/.env
+
 *.log
 logs
 **/*.backup.*
 **/*.back.*
-
+server/node_modules
 node_modules
 bower_components
-
+        server/.env
 *.sublime*
 ### Node ###
 # Logs
@@ -140,7 +140,11 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
-
+server/node_modules
+client/node_modules
+sever/.env
+.env
+node_modules
 # TernJS port file
 .tern-port
 client/node_modules
